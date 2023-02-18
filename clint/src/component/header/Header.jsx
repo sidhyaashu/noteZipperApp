@@ -5,10 +5,11 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import '../../bootstrap.min.css'
 
 const Header = () => {
+  const navigate = useNavigate()
   return (
     <Navbar bg="light" expand="lg" >
       <Container >
@@ -35,7 +36,12 @@ const Header = () => {
             <Nav.Link href="/mynotes"><Link to='/mynotes'>My Notes</Link></Nav.Link>
             <NavDropdown title="Asutosh sidhya" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">MyProfile</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
+              <NavDropdown.Item href="#action4"
+              onClick={()=>{
+                localStorage.removeItem('userInfo')
+                navigate('/')
+              }}
+              >
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
