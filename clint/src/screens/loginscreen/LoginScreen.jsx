@@ -6,53 +6,34 @@ import ErrorMessage from '../../component/ErrorMessage'
 import Loading from '../../component/Loading'
 import MainScreen from '../../component/MainScreen'
 import './LoginScreen.css'
+import { useDispatch,useSelector } from 'react-redux'
+import { login } from '../../state/actions/userActions.js'
 
-const LoginScreen = () => {
+const LoginScreen = ({history}) => {
     const[email,setEmail] =useState('')
     const[password,setPassword] =useState('')
-    const[error,setError] =useState(false)
-    const[loding,setLoding] =useState(false)
 
+    const dispatch = useDispatch()
+    const userLogin = useSelector((state)=>state.userLogin)
+
+    const { loading,error,userInfo } = userLogin
+
+    useEffect(()=>{
+        
+    },[history])
 
 
     const submitHandler=async(e)=>{
         e.preventDefault()
-        try {
-            const config={
-                Headers:{
-                    "Content-Type":"application/json"
-                }
-            }
-            setLoding(true)
-
-            const { data } = await axios.post(
-                'http://localhost:5000/api/users/login',
-                {
-                    email,
-                    password
-                },
-                config
-            )
-        
-            console.log(data)
-            localStorage.setItem('userInfo',JSON.stringify(data))
-            setLoding(false)
-        } catch (error) {
-            setError(true)
-            setLoding(false)
-            setTimeout(() => {
-               setError(false) 
-            }, 2000);
-            
-        }
+        dispatch(login(email,password))
     }
 
   return (
     <MainScreen title='LOGIN'>
         <div className="loginContainer">
             {error && <ErrorMessage variant='danger' >INVALID</ErrorMessage>}
-            {loding && <Loading/>}
-                {!loding && (
+            {loading && <Loading/>}
+                {!loading && (
                     <>
                     <Form onSubmit={submitHandler} >
                     <Form.Group className="mb-3" controlId="formBasicEmail">
